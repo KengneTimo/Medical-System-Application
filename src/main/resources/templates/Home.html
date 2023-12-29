@@ -1,46 +1,44 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical System</title>
-
+    <title>Medical System - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">-->
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-ez0pTnJV8LlL3tTQzJkI5I9CQ8j5tzpJrhVMEaQxO1qUqq/hFQOBU6nZpXGi7r/n" crossorigin="anonymous">
     <style>
         body {
             background-color: #f5f5f5;
         }
 
-        .navbar {
-            background-color: #007bff;
-        }
-
-        .navbar-brand, .navbar-nav .nav-link {
-            color: #ffffff;
-        }
-
-        .jumbotron {
-            background: url('https://via.placeholder.com/1600x600') center/cover no-repeat;
-            color: #ffffff;
-            text-align: center;
-            padding: 150px 0;
-            margin-bottom: 0;
-        }
-
-        .feature {
-            padding: 50px 0;
+        .medical-form {
             background-color: #ffffff;
+            padding: 20px;
+            margin: 50px auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px #000000;
+        }
+
+        h1 {
+            color: blue;
+        }
+
+        @media (max-width: 768px) {
+            /* Apply styles for screens smaller than 768px width */
+            .card-body .text-center img {
+                width: 150px;
+                height: 80px;
+            }
         }
     </style>
-</head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="#">Medical System</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <a class="navbar-brand font-weight-bolder" href="#">Product System</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -48,69 +46,92 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link font-weight-bold" href="/">Home</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+                <a class="nav-link font-weight-bold" href="#">Contact</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link font-weight-bold" href="#" style=":hover">About Us</a>
             </li>
         </ul>
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page"  href="/login">Login</a>
+                <a class="nav-link font-weight-bold" href="/login">Login</a>
             </li>
         </ul>
     </div>
 </nav>
 
 
-<div class="container-fluid text-center">
-    <h1 class="display-4 text-primary">Welcome to the Medical System</h1>
-    <p class=" text-secondary ">Your health is our priority.</p>
+<section class="bg-success" style="margin-bottom: 100px;">
+    <div class="container-fluid text-center">
+        <h1 class="display-4 text-white">Welcome to Product E-commerce</h1>
+        <p class="text-white py-5">Your satisfaction is our priority.</p>
+    </div>
+</section>
 
+
+
+<div th:if="${message}" class="alert alert-danger">
+    [[${message}]]
 </div>
 
+<div class="container feature py-5" style="background-color: saddlebrown;">
+    <div th:if="${pagedProducts != null}">
+        <div class="card-deck">
+            <div th:each="product : ${pagedProducts.content}" class="card mb-3" >
+                <div class="card-body bg-success" >
+                    <div class="text-center">
+                        <!-- Add an img tag to display the product image -->
+                        <img th:src="@{/admin/products/image/{productId}(productId=${product.id})}" class="img-fluid" alt="Product Image" style="width: 100px; height: 100px;"/>
+                    </div>
+                    <div class="mt-3">
+                        <label>Name:</label>
+                        <h5 class="card-title" th:text="${product.name}">Product Name</h5>
+                    </div>
+                    <div>
+                        <label>Description:</label>
+                        <p class="card-text" th:text="${product.description}">Product Description</p>
+                    </div>
+                    <div>
+                        <label>Price:</label>
+                        <p class="card-text" th:text="'Price: ' + ${product.price}">Price: </p>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <a class="btn btn-dark" th:href="@{/admin/purchase/add(productId=${product.id})}">Purchase Product</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-<div class="container feature">
-    <div class="row">
-        <div class="col-md-4">
-            <img src="/images/4.jpg" alt="Feature 1" class="img-fluid rounded-circle mb-3">
-            <h4>Feature 1</h4>
-            <p>Some description of the feature goes here.</p>
-        </div>
-        <div class="col-md-4">
-            <img src="/images/2.jpeg" alt="Feature 2" class="img-fluid rounded-circle mb-3">
-            <h4>Feature 2</h4>
-            <p>Some description of the feature goes here.</p>
-        </div>
-        <div class="col-md-4">
-            <img src="/images/1.jpg" alt="Feature 3" class="img-fluid rounded-circle mb-3">
-            <h4>Feature 3</h4>
-            <p>Some description of the feature goes here.</p>
-        </div>
+
+
+
+
     </div>
 </div>
-<div class="container-fluid text-center">
-    <a class="btn btn-primary btn-lg" href="/signup" role="button">Get Started</a>
-</div>
 
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+<footer class="bg-success py-5" style="margin-top: 100px;">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <i class="fab fa-facebook fa-2x mx-3"></i>
+                <i class="fab fa-twitter fa-2x mx-3"></i>
+                <i class="fab fa-instagram fa-2x mx-3"></i>
+                <!-- Add more social media icons as needed -->
+
+                <p class="mt-3">Follow us on social media for updates</p>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
